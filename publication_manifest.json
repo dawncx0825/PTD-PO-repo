@@ -5,7 +5,8 @@
     "Machine paths in ops/tests/launch.sh replaced by PTD_ROOT/PTD_MODEL_PATH/PTD_INPUT_BUNDLE/PTD_PAPO_SOURCE",
     "Public documentation and compact historical evidence",
     "Canceled checkpoint-frequency helper CLI disabled; log merge unit tests retained",
-    "Protocol hash gate includes eval driver and cluster helper"
+    "Protocol hash gate includes eval driver and cluster helper",
+    "README adds verified paper Table 1 PTD-PO versus paired local results and percentage-point differences"
   ],
   "excluded": [
     "private account transport and cluster-resource orchestration",
@@ -42,8 +43,8 @@
       "original_sha256": null
     },
     "README.md": {
-      "bytes": 11908,
-      "sha256": "440700601531c8e9868e2973cf03d631a0e9d4823735d33a7a6447bcbceadea2",
+      "bytes": 13467,
+      "sha256": "14a9fbb93b0f437ef1e1b293c9423dd623f1f60b648e7920d8d7da3cddeae2a0",
       "original_sha256": "0ef5a06e18bf24943e85372d46b480351e8ca736e5e12c988ae8d258109a97a8"
     },
     "UPSTREAM.md": {
