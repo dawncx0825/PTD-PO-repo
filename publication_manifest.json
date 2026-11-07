@@ -6,7 +6,9 @@
     "Public documentation and compact historical evidence",
     "Canceled checkpoint-frequency helper CLI disabled; log merge unit tests retained",
     "Protocol hash gate includes eval driver and cluster helper",
-    "README adds verified paper Table 1 PTD-PO versus paired local results and percentage-point differences"
+    "README adds verified paper Table 1 PTD-PO versus paired local results and percentage-point differences",
+    "Add paper Table 3 original-model baseline and keep Table 1/Table 3 PTD-PO results distinct",
+    "Document confirmed Thinking identity, matching paper 4096-token budget, and unresolved baseline evaluation discrepancies"
   ],
   "excluded": [
     "private account transport and cluster-resource orchestration",
@@ -43,8 +45,8 @@
       "original_sha256": null
     },
     "README.md": {
-      "bytes": 13467,
-      "sha256": "14a9fbb93b0f437ef1e1b293c9423dd623f1f60b648e7920d8d7da3cddeae2a0",
+      "bytes": 18584,
+      "sha256": "86548e41222f351dcd83c34b44090a2684980beb1365638cc7d24282a94411af",
       "original_sha256": "0ef5a06e18bf24943e85372d46b480351e8ca736e5e12c988ae8d258109a97a8"
     },
     "UPSTREAM.md": {
@@ -996,6 +998,11 @@
       "bytes": 1326,
       "sha256": "a9133fbaa4f09f356ae2e74bb1524720135f58c1362826ccbc5199d49815536c",
       "original_sha256": "85ee296a26b0fa68f2c8bce9d30ba4759bca6578ee18c67a00dd3fd93b9c0743"
+    },
+    "research/paper_table3_4b_baseline.json": {
+      "bytes": 1143,
+      "sha256": "1bbaa87d49606b7055725e3569b5a8c74c6cf11aaca4319f257e9e316b3a2d35",
+      "original_sha256": null
     }
   }
 }

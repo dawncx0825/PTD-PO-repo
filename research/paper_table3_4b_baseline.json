@@ -1,0 +1,55 @@
+{
+  "source": "https://arxiv.org/html/2606.07000v2",
+  "table": 3,
+  "section": "Appendix E.1",
+  "group_label": "Qwen3-VL-4B-Thinking",
+  "baseline_row_label": "Qwen3-VL-4B",
+  "benchmark_order": [
+    "PAPO_MMK12",
+    "hiyouga_geometry3k",
+    "AI4Math_MathVerse",
+    "AI4Math_MathVista",
+    "We_Math",
+    "MMMU_MMMU_Pro",
+    "BUAADreamer_clevr_count_70k",
+    "AI4Math_MathVerse_vision_dependent",
+    "lscpku_LogicVista"
+  ],
+  "rows": {
+    "original_model": [
+      37.31,
+      48.88,
+      56.28,
+      61.54,
+      52.95,
+      30.29,
+      91.38,
+      53.01,
+      39.32
+    ],
+    "PTD-PO_GRPO": [
+      71.33,
+      61.02,
+      77.56,
+      69.55,
+      79.39,
+      38.56,
+      92.88,
+      74.16,
+      57.63
+    ]
+  },
+  "reported_averages": {
+    "original_model": {
+      "general": 51.39,
+      "vision": 53.5,
+      "overall": 52.33
+    },
+    "PTD-PO_GRPO": {
+      "general": 71.77,
+      "vision": 65.81,
+      "overall": 69.12
+    }
+  },
+  "caution": "Table 3 PTD-PO_GRPO is 69.12 whereas Table 1 PTD-PO is 71.23. Keep table provenance separate; do not infer a matched Table 1 gain from the Table 3 baseline."
+}
