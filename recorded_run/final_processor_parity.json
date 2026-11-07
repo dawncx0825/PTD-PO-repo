@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "checks": {
+    "tokenizer_backend_equal": true,
+    "chat_template_equal": true,
+    "special_tokens_equal": true,
+    "image_processor_equal": true
+  },
+  "tokenizer_backend_sha256": "a63080b4b30dc861fe1b0e420c53a241304dc81aff3d9bb315e6e33e2a1ab794",
+  "note": "No tokenizer flags changed; exported tokenizer behavior and image processor equal original paired baseline."
+}

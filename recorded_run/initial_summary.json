@@ -1,0 +1,123 @@
+{
+  "label": "initial",
+  "complete": true,
+  "questions": 11206,
+  "responses": 89648,
+  "missing": 0,
+  "benchmarks": {
+    "AI4Math_MathVerse": {
+      "questions": 2180,
+      "responses": 17440,
+      "correct": 6894.0,
+      "avg_at_8_percent": 39.52981651376147,
+      "empty": 0,
+      "finish_reasons": {
+        "stop": 7069,
+        "length": 10371
+      },
+      "output_tokens": 58229600
+    },
+    "AI4Math_MathVerse_vision_dependent": {
+      "questions": 1308,
+      "responses": 10464,
+      "correct": 3823.0,
+      "avg_at_8_percent": 36.53478593272171,
+      "empty": 0,
+      "finish_reasons": {
+        "stop": 3955,
+        "length": 6509
+      },
+      "output_tokens": 35542077
+    },
+    "AI4Math_MathVista": {
+      "questions": 1000,
+      "responses": 8000,
+      "correct": 4443.0,
+      "avg_at_8_percent": 55.5375,
+      "empty": 0,
+      "finish_reasons": {
+        "length": 2388,
+        "stop": 5612
+      },
+      "output_tokens": 18226021
+    },
+    "BUAADreamer_clevr_count_70k": {
+      "questions": 200,
+      "responses": 1600,
+      "correct": 1462.0,
+      "avg_at_8_percent": 91.375,
+      "empty": 0,
+      "finish_reasons": {
+        "stop": 1593,
+        "length": 7
+      },
+      "output_tokens": 902426
+    },
+    "MMMU_MMMU_Pro": {
+      "questions": 1730,
+      "responses": 13840,
+      "correct": 3341.0,
+      "avg_at_8_percent": 24.140173410404625,
+      "empty": 0,
+      "finish_reasons": {
+        "stop": 5436,
+        "length": 8404
+      },
+      "output_tokens": 45917517
+    },
+    "PAPO_MMK12": {
+      "questions": 2000,
+      "responses": 16000,
+      "correct": 3894.0,
+      "avg_at_8_percent": 24.3375,
+      "empty": 0,
+      "finish_reasons": {
+        "length": 12038,
+        "stop": 3962
+      },
+      "output_tokens": 58654760
+    },
+    "We_Math": {
+      "questions": 1740,
+      "responses": 13920,
+      "correct": 4885.0,
+      "avg_at_8_percent": 35.0933908045977,
+      "empty": 0,
+      "finish_reasons": {
+        "length": 8997,
+        "stop": 4923
+      },
+      "output_tokens": 47390592
+    },
+    "hiyouga_geometry3k": {
+      "questions": 601,
+      "responses": 4808,
+      "correct": 1854.0,
+      "avg_at_8_percent": 38.56073211314476,
+      "empty": 0,
+      "finish_reasons": {
+        "stop": 1959,
+        "length": 2849
+      },
+      "output_tokens": 15964580
+    },
+    "lscpku_LogicVista": {
+      "questions": 447,
+      "responses": 3576,
+      "correct": 1037.0,
+      "avg_at_8_percent": 28.998881431767337,
+      "empty": 0,
+      "finish_reasons": {
+        "length": 2461,
+        "stop": 1115
+      },
+      "output_tokens": 12496012
+    }
+  },
+  "general_avg": 38.61178788630078,
+  "vision_avg": 45.26221019372342,
+  "overall_macro_avg": 41.567531134044174,
+  "scores_sha256": "cc66b99707a74ba3f3fc23e90b18a514756f9a042660e3307a66b61c4aafc6f2",
+  "scorer": "official PAPO-Eval compute_accuracy_boxed_math; avg@8, not pass@8",
+  "scorer_commit": "bee18f0800cfd324f7a342053beea5806c473b32"
+}

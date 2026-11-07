@@ -1,0 +1,15 @@
+{
+  "verified": true,
+  "step": 198,
+  "hf_path": "<PTD_ROOT>/checkpoints/global_step_198/actor/huggingface",
+  "changed_tensors": 609,
+  "changed_vision_tensors": 259,
+  "reloaded": true,
+  "generated_new_tokens": 24,
+  "visual_reload_sample_id": "AI4Math_MathVerse_0",
+  "visual_reload_new_text": "Okay, let's see. I need to find the measure of angle CED in triangle ABC. First, let me",
+  "safetensors_sha256": {
+    "model-00002-of-00002.safetensors": "7986d95c3699c67ca9346b825052029545a2a34e417121e0277c565f3f389d56",
+    "model-00001-of-00002.safetensors": "9b81eeb366a7f541a50a5ad4647d0e8e30dfe6b3eca2ef77666de12f24caf08c"
+  }
+}

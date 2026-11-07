@@ -1,0 +1,474 @@
+--- a/verl/trainer/core_algos.py
++++ b/verl/trainer/core_algos.py
+@@ -718,9 +718,9 @@
+         m_tail = 0.5 * (p_tail_s + p_tail_t)  # [B, T]
+         m_tail_log = m_tail.clamp(min=1e-10).log()
+ 
+-        # KL(S || M): stop-grad on p_s weight to bound gradient when p_s -> 0
+-        kl_s_m = (student_topk_probs.detach() * (student_topk_log_probs - m_log_probs)).sum(-1) \
+-                 + (p_tail_s.detach() * (p_tail_s.log() - m_tail_log)).to(student_topk_probs.dtype)
++        # KL(S || M): differentiate both student weights and the mixture.
++        kl_s_m = (student_topk_probs * (student_topk_log_probs - m_log_probs)).sum(-1) \
++                 + (p_tail_s * (p_tail_s.log() - m_tail_log)).to(student_topk_probs.dtype)
+         # KL(T || M): teacher already detached, no extra stop-grad needed
+         kl_t_m = (teacher_probs_at_student * (teacher_lp_at_student - m_log_probs)).sum(-1) \
+                  + (p_tail_t * (p_tail_t.log() - m_tail_log)).to(student_topk_probs.dtype)
+@@ -774,7 +774,7 @@
+             t_p = t_lp.exp()
+             m_p = 0.5 * (s_p + t_p)
+             m_lp = m_p.clamp(min=1e-10).log()
+-            kl_s_m = (s_p.detach() * (s_lp - m_lp)).sum(-1)
++            kl_s_m = (s_p * (s_lp - m_lp)).sum(-1)
+             kl_t_m = (t_p * (t_lp - m_lp)).sum(-1)
+             kl = 0.5 * (kl_s_m + kl_t_m)
+         else:
+--- a/verl/trainer/ray_trainer.py
++++ b/verl/trainer/ray_trainer.py
+@@ -664,7 +664,7 @@
+                             accuracy_scores = torch.tensor(accuracy_list, dtype=torch.float32)
+ 
+                             # Build a "has_hint" mask: samples whose hint_attention_mask is all-zeros have no hint
+-                            has_hint = batch.batch["hint_attention_mask"].sum(dim=-1) > 0  # [B] bool
++                            has_hint = batch.batch.get("hint_valid", batch.batch["hint_attention_mask"].sum(dim=-1) > 0)  # [B] bool
+ 
+                             ptd_mask, ptd_group_mask = compute_ptd_mask(
+                                 accuracy_scores, batch.non_tensor_batch["uid"],
+@@ -754,7 +754,7 @@
+ 
+                     # OPSD mode: ALL samples get distillation, teacher = frozen ref model
+                     if self.config.algorithm.enable_opsd and "hint_input_ids" in batch.batch:
+-                        has_hint = batch.batch["hint_attention_mask"].sum(dim=-1) > 0  # [B] bool
++                        has_hint = batch.batch.get("hint_valid", batch.batch["hint_attention_mask"].sum(dim=-1) > 0)  # [B] bool
+ 
+                         # OPSD: all samples with valid hints get distillation
+                         ptd_mask = has_hint
+--- a/verl/utils/dataset.py
++++ b/verl/utils/dataset.py
+@@ -258,6 +258,12 @@
+     def __getitem__(self, index):
+         example: dict = self.dataset[index]
+         messages = self._build_messages(example)
++        # Preserve modality and build teacher messages before image/prompt fields are popped.
++        has_images = self.image_key in example
++        has_videos = self.video_key in example
++        hint_str = example.get(self.prompt_with_hint_key, "") if self.prompt_with_hint_key else ""
++        hint_valid = bool(hint_str and hint_str.strip())
++        hint_messages = self._build_hint_messages(example) if hint_valid else messages
+         example.pop(self.prompt_key, None)
+ 
+         if self.image_key in example:
+@@ -348,93 +354,79 @@
+         example["raw_prompt_ids"] = raw_prompt_ids
+         example["ground_truth"] = example.pop(self.answer_key)
+ 
+-        # Tokenize hint prompt for PTD mode (skip if key absent or hint string is empty)
+-        if self.prompt_with_hint_key and self.prompt_with_hint_key in example:
+-            hint_str = example.get(self.prompt_with_hint_key, "")
+-            if hint_str and hint_str.strip():
+-                hint_messages = self._build_hint_messages(example)
+-
+-                if self.image_key in example and self.processor is not None:
+-                    hint_prompt = self.processor.apply_chat_template(
+-                        hint_messages, add_generation_prompt=True, tokenize=False
+-                    )
+-                    # Re-use already-processed images (processed_images from earlier scope)
+-                    hint_model_inputs = self.processor(
+-                        processed_images, [hint_prompt], add_special_tokens=False, return_tensors="pt"
+-                    )
+-                elif self.video_key in example and self.processor is not None:
+-                    hint_prompt = self.processor.apply_chat_template(
+-                        hint_messages, add_generation_prompt=True, tokenize=False
+-                    )
+-                    hint_model_inputs = self.processor(
+-                        videos=processed_videos, text=[hint_prompt], add_special_tokens=False, return_tensors="pt"
+-                    )
++        # Empty/missing hints use the original legal multimodal prompt solely for
++        # synchronized teacher forwards. hint_valid keeps them out of supervision.
++        if self.prompt_with_hint_key:
++            example["hint_valid"] = torch.tensor(hint_valid, dtype=torch.bool)
++            if has_images and self.processor is not None:
++                hint_prompt = self.processor.apply_chat_template(
++                    hint_messages, add_generation_prompt=True, tokenize=False
++                )
++                # Re-use already-processed images (processed_images from earlier scope)
++                hint_model_inputs = self.processor(
++                    processed_images, [hint_prompt], add_special_tokens=False, return_tensors="pt"
++                )
++            elif has_videos and self.processor is not None:
++                hint_prompt = self.processor.apply_chat_template(
++                    hint_messages, add_generation_prompt=True, tokenize=False
++                )
++                hint_model_inputs = self.processor(
++                    videos=processed_videos, text=[hint_prompt], add_special_tokens=False, return_tensors="pt"
++                )
++            else:
++                hint_prompt = self.tokenizer.apply_chat_template(
++                    hint_messages, add_generation_prompt=True, tokenize=False
++                )
++                hint_model_inputs = self.tokenizer(
++                    [hint_prompt], add_special_tokens=False, return_tensors="pt"
++                )
++
++            hint_input_ids = hint_model_inputs.pop("input_ids")[0]  # (hint_seq_len,)
++            hint_attention_mask = hint_model_inputs.pop("attention_mask")[0]  # (hint_seq_len,)
++
++            # Position IDs for hint prompt
++            if (
++                self.processor is not None
++                and "Qwen2VLImageProcessor" in self.processor.image_processor.__class__.__name__
++            ):
++                if "Qwen3VLProcessor" in self.processor.__class__.__name__:
++                    from ..models.transformers.qwen3_vl import get_rope_index
+                 else:
+-                    hint_prompt = self.tokenizer.apply_chat_template(
+-                        hint_messages, add_generation_prompt=True, tokenize=False
+-                    )
+-                    hint_model_inputs = self.tokenizer(
+-                        [hint_prompt], add_special_tokens=False, return_tensors="pt"
+-                    )
+-
+-                hint_input_ids = hint_model_inputs.pop("input_ids")[0]  # (hint_seq_len,)
+-                hint_attention_mask = hint_model_inputs.pop("attention_mask")[0]  # (hint_seq_len,)
+-
+-                # Position IDs for hint prompt
+-                if (
+-                    self.processor is not None
+-                    and "Qwen2VLImageProcessor" in self.processor.image_processor.__class__.__name__
+-                ):
+-                    if "Qwen3VLProcessor" in self.processor.__class__.__name__:
+-                        from ..models.transformers.qwen3_vl import get_rope_index
+-                    else:
+-                        from ..models.transformers.qwen2_vl import get_rope_index
+-
+-                    hint_vision_pos = get_rope_index(
+-                        self.processor,
+-                        input_ids=hint_input_ids,
+-                        image_grid_thw=hint_model_inputs.get("image_grid_thw", None),
+-                        video_grid_thw=hint_model_inputs.get("video_grid_thw", None),
+-                        second_per_grid_ts=hint_model_inputs.get("second_per_grid_ts", None),
+-                        attention_mask=hint_attention_mask,
+-                    )  # (3, hint_seq_len)
+-                    hint_text_pos = torch.arange(len(hint_input_ids)).unsqueeze(0)  # (1, hint_seq_len)
+-                    hint_position_ids = torch.cat((hint_text_pos, hint_vision_pos), dim=0)  # (4, hint_seq_len)
+-                else:
+-                    hint_position_ids = torch.clip(
+-                        hint_attention_mask.cumsum(dim=0) - 1, min=0, max=None
+-                    )  # (hint_seq_len,)
+-
+-                # Left-pad to max_hint_prompt_length
+-                hint_input_ids, hint_attention_mask, hint_position_ids = VF.postprocess_data(
++                    from ..models.transformers.qwen2_vl import get_rope_index
++
++                hint_vision_pos = get_rope_index(
++                    self.processor,
+                     input_ids=hint_input_ids,
++                    image_grid_thw=hint_model_inputs.get("image_grid_thw", None),
++                    video_grid_thw=hint_model_inputs.get("video_grid_thw", None),
++                    second_per_grid_ts=hint_model_inputs.get("second_per_grid_ts", None),
+                     attention_mask=hint_attention_mask,
+-                    position_ids=hint_position_ids,
+-                    max_length=self.max_hint_prompt_length,
+-                    pad_token_id=self.tokenizer.pad_token_id,
+-                    left_pad=True,
+-                    truncation="right",
+-                )
+-                hint_raw_prompt_ids = self.tokenizer.encode(hint_prompt, add_special_tokens=False)
+-                if len(hint_raw_prompt_ids) > self.max_hint_prompt_length:
+-                    hint_raw_prompt_ids = hint_raw_prompt_ids[: self.max_hint_prompt_length]
+-
+-                example["hint_input_ids"] = hint_input_ids
+-                example["hint_attention_mask"] = hint_attention_mask
+-                example["hint_position_ids"] = hint_position_ids
+-                example["hint_raw_prompt_ids"] = hint_raw_prompt_ids
++                )  # (3, hint_seq_len)
++                hint_text_pos = torch.arange(len(hint_input_ids)).unsqueeze(0)  # (1, hint_seq_len)
++                hint_position_ids = torch.cat((hint_text_pos, hint_vision_pos), dim=0)  # (4, hint_seq_len)
+             else:
+-                # Empty hint: store zero tensors so collate_fn can stack them
+-                example["hint_input_ids"] = torch.zeros(self.max_hint_prompt_length, dtype=input_ids.dtype)
+-                example["hint_attention_mask"] = torch.zeros(self.max_hint_prompt_length, dtype=attention_mask.dtype)
+-                if position_ids.dim() == 1:
+-                    example["hint_position_ids"] = torch.zeros(self.max_hint_prompt_length, dtype=position_ids.dtype)
+-                else:
+-                    # mRoPE: (4, max_hint_prompt_length)
+-                    example["hint_position_ids"] = torch.zeros(
+-                        position_ids.shape[0], self.max_hint_prompt_length, dtype=position_ids.dtype
+-                    )
+-                example["hint_raw_prompt_ids"] = []
++                hint_position_ids = torch.clip(
++                    hint_attention_mask.cumsum(dim=0) - 1, min=0, max=None
++                )  # (hint_seq_len,)
++
++            # Left-pad to max_hint_prompt_length
++            hint_input_ids, hint_attention_mask, hint_position_ids = VF.postprocess_data(
++                input_ids=hint_input_ids,
++                attention_mask=hint_attention_mask,
++                position_ids=hint_position_ids,
++                max_length=self.max_hint_prompt_length,
++                pad_token_id=self.tokenizer.pad_token_id,
++                left_pad=True,
++                truncation="error",
++            )
++            hint_raw_prompt_ids = self.tokenizer.encode(hint_prompt, add_special_tokens=False)
++            if len(hint_raw_prompt_ids) > self.max_hint_prompt_length:
++                raise RuntimeError(f"Hint raw prompt length {len(hint_raw_prompt_ids)} exceeds {self.max_hint_prompt_length}.")
++
++            example["hint_input_ids"] = hint_input_ids
++            example["hint_attention_mask"] = hint_attention_mask
++            example["hint_position_ids"] = hint_position_ids
++            example["hint_raw_prompt_ids"] = hint_raw_prompt_ids
+             example.pop(self.prompt_with_hint_key, None)
+ 
+         return example
+--- a/verl/workers/actor/dp_actor.py
++++ b/verl/workers/actor/dp_actor.py
+@@ -263,7 +263,7 @@
+             grad_norm = nn.utils.clip_grad_norm_(self.actor_module.parameters(), max_norm=self.config.max_grad_norm)
+ 
+         if not torch.isfinite(grad_norm):
+-            print("Gradient norm is not finite. Skip update.")
++            raise FloatingPointError("Gradient norm is not finite; stopping the invalid run.")
+         else:
+             self.actor_optimizer.step()
+ 
+@@ -327,6 +327,7 @@
+         responses: torch.Tensor,
+         temperature: float,
+         top_k: int = 0,
++        multi_modal_inputs=None,
+     ):
+         """Teacher forward: hint_prompt + response -> log_probs or own top-K (detached).
+ 
+@@ -370,10 +371,16 @@
+         else:
+             teacher_pos = torch.clip(teacher_attn.cumsum(dim=-1) - 1, min=0)  # [P, hint_len + resp_len]
+ 
++        if multi_modal_inputs is not None:
++            multi_modal_inputs = batch_collate(multi_modal_inputs)
++            multi_modal_inputs = {key: torch.cat(value, dim=0) for key, value in multi_modal_inputs.items()}
++        else:
++            multi_modal_inputs = {}
+         output = self.actor_module(
+             input_ids=teacher_ids,
+             attention_mask=teacher_attn,
+             position_ids=teacher_pos,
++            **multi_modal_inputs,
+             use_cache=False,
+         )
+         # Clone only the response slice [P, resp_len, V] — avoids keeping the full
+@@ -385,10 +392,13 @@
+         if top_k > 0:
+             # Compute top-K indices first (BF16 logits, no large allocation)
+             _, topk_ids = torch.topk(logits, k=top_k, dim=-1)  # [P, resp_len, K]
+-            # Memory-efficient log_softmax at K positions only:
+-            # log_softmax(x_i) = x_i - logsumexp(x_all) — avoids full [P, T, V] float32
+-            log_Z = torch.logsumexp(logits, dim=-1, keepdim=True)  # [P, resp_len, 1]
+-            topk_log_probs = (torch.gather(logits, -1, topk_ids) - log_Z).float()  # [P, resp_len, K]
++            # Normalize over the full vocabulary in FP32. Token chunks bound the
++            # temporary FP32 allocation without changing the probability target.
++            topk_log_probs = torch.cat([
++                torch.gather(logits[:, t:t + 64], -1, topk_ids[:, t:t + 64]).float()
++                - torch.logsumexp(logits[:, t:t + 64].float(), dim=-1, keepdim=True)
++                for t in range(0, resp_len, 64)
++            ], dim=1)
+             del logits  # free [P, resp_len, V]
+             torch.cuda.empty_cache()  # return pool fragments to CUDA before next micro-batch
+             return topk_log_probs, topk_ids  # both detached
+@@ -423,13 +433,16 @@
+         temperature = data.meta_info["temperature"]
+ 
+         ptd_mask = data.batch["ptd_mask"]   # [B]
++        if "hint_valid" in data.batch:
++            ptd_mask = ptd_mask & data.batch["hint_valid"]
+         K   = self.config.ptd_top_k
+         mb  = self.config.micro_batch_size_per_device_for_experience
+ 
+         # Iterate over ALL samples — same as compute_log_prob — so every FSDP rank
+         # runs the same number of _forward_teacher calls (avoids all-gather deadlock).
+         micro_batches = data.select(
+-            ["hint_input_ids", "hint_attention_mask", "hint_position_ids", "responses"]
++            ["hint_input_ids", "hint_attention_mask", "hint_position_ids", "responses"],
++            ["multi_modal_inputs"] if "multi_modal_inputs" in data.non_tensor_batch else [],
+         ).split(mb)
+ 
+         if K > 0:
+@@ -440,6 +453,7 @@
+                     mb_b["hint_input_ids"], mb_b["hint_attention_mask"],
+                     mb_b["hint_position_ids"], mb_b["responses"],
+                     temperature, top_k=K,
++                    multi_modal_inputs=micro_batch.non_tensor_batch.get("multi_modal_inputs"),
+                 )  # [mb, T, K], [mb, T, K] — both detached
+                 all_lp.append(t_lp)
+                 all_ids.append(t_ids)
+@@ -461,6 +475,7 @@
+                     mb_b["hint_input_ids"], mb_b["hint_attention_mask"],
+                     mb_b["hint_position_ids"], mb_b["responses"],
+                     temperature, top_k=K,
++                    multi_modal_inputs=micro_batch.non_tensor_batch.get("multi_modal_inputs"),
+                 )  # [mb, T, V] — detached, on GPU
+                 all_lp.append(t_lp.cpu())  # move to CPU immediately
+                 del t_lp
+@@ -489,6 +504,7 @@
+                     mb_b["hint_input_ids"], mb_b["hint_attention_mask"],
+                     mb_b["hint_position_ids"], mb_b["responses"],
+                     temperature,
++                    multi_modal_inputs=micro_batch.non_tensor_batch.get("multi_modal_inputs"),
+                 )  # [mb, T] — detached
+                 all_lp.append(t_lp)
+ 
+@@ -530,11 +546,13 @@
+                 original batch so we can slice the CPU tensor.
+ 
+         Returns:
+-            ptd_loss: scalar tensor
++            ptd_loss: unnormalized sum over valid PTD response tokens
+         """
++        if "hint_valid" in model_inputs:
++            ptd_mask = ptd_mask & model_inputs["hint_valid"]
+         ptd_idx = ptd_mask.nonzero(as_tuple=True)[0]
+         if len(ptd_idx) == 0:
+-            return torch.tensor(0.0, device=student_log_probs.device)
++            return student_log_probs.sum() * 0.0
+ 
+         ptd_resp_mask = response_mask[ptd_idx]  # [P, T]
+ 
+@@ -585,7 +603,7 @@
+                 kl_direction=self.config.ptd_kl_direction,
+             )  # [P, T]
+ 
+-        return average_loss(kl, ptd_resp_mask, mode=self.config.loss_avg_mode)
++        return (kl * ptd_resp_mask).sum()
+ 
+     def update_policy(self, data: DataProto) -> dict[str, Any]:
+         self.actor_module.train()
+@@ -600,6 +618,12 @@
+             data.batch["_batch_idx"] = torch.arange(len(data), device=data.batch.device)
+             data.batch.lock_()
+ 
++        distillation_enabled = self.config.enable_ptd or self.config.enable_opsd
++        if distillation_enabled and self.config.ulysses_size != 1:
++            raise NotImplementedError("Global PTD token normalization is validated only for ulysses_size=1")
++        # SP=1: every FSDP rank owns distinct samples; FSDP averages gradients
++        # over this world group, so each local numerator needs dp_size compensation.
++        dp_size = dist.get_world_size()
+         select_keys = ["input_ids", "attention_mask", "position_ids", "responses", "response_mask"]
+         if self.config.enable_opsd:
+             # OPSD: pure distillation, no pg_loss → no old_log_probs/ref_log_probs/advantages
+@@ -620,6 +644,8 @@
+                     select_keys.append("_batch_idx")
+                 if "teacher_log_probs" in data.batch.keys():
+                     select_keys.extend(["teacher_log_probs"])
++        if "hint_valid" in data.batch:
++            select_keys.append("hint_valid")
+         non_tensor_select_keys = ["multi_modal_inputs"]
+ 
+         # Split to make minibatch iterator for updating the actor
+@@ -627,6 +653,7 @@
+         mini_batches = data.select(select_keys, non_tensor_select_keys).split(self.config.global_batch_size_per_device)
+ 
+         metrics = defaultdict(list)
++        optimizer_updates = 0
+         for _ in range(self.config.ppo_epochs):
+             if self.rank == 0:
+                 mini_batches = tqdm(mini_batches, desc="Train mini-batches", position=1)
+@@ -634,6 +661,15 @@
+             for mini_batch in mini_batches:
+                 total_response_tokens = torch.sum(mini_batch.batch["response_mask"])
+                 dist.all_reduce(total_response_tokens, op=dist.ReduceOp.SUM)
++
++                if distillation_enabled:
++                    valid_ptd = mini_batch.batch["ptd_mask"].bool()
++                    if "hint_valid" in mini_batch.batch:
++                        valid_ptd = valid_ptd & mini_batch.batch["hint_valid"]
++                    total_ptd_tokens = (mini_batch.batch["response_mask"] * valid_ptd[:, None]).sum()
++                    dist.all_reduce(total_ptd_tokens, op=dist.ReduceOp.SUM)
++                    ptd_scale = dp_size / total_ptd_tokens.clamp_min(1)
++                    ptd_numerator = torch.zeros((), device=total_ptd_tokens.device)
+ 
+                 if self.config.dynamic_batching:
+                     max_input_len = mini_batch.batch["input_ids"].size(-1)
+@@ -649,6 +685,8 @@
+                     torch.cuda.empty_cache()  # defragment pool from previous micro-batch's variable-length fwd/bwd
+                     model_inputs = {**micro_batch.batch, **micro_batch.non_tensor_batch}
+                     response_mask = model_inputs["response_mask"]
++                    if distillation_enabled and "hint_valid" in model_inputs:
++                        model_inputs["ptd_mask"] = model_inputs["ptd_mask"] & model_inputs["hint_valid"]
+ 
+                     if self.config.enable_opsd:
+                         # ── OPSD: pure distillation, no policy gradient ──
+@@ -676,16 +714,11 @@
+                                 log_probs, student_topk, student_all_log_probs, response_mask,
+                                 teacher_all_cpu=teacher_all_cpu,
+                             )
+-                            loss = ptd_loss * self.config.opsd_coef
+-                            append_to_dict(metrics, {"actor/opsd_kl": ptd_loss.detach().item()})
+-                            append_to_dict(metrics, {"actor/opsd_loss": loss.detach().item()})
++                            ptd_numerator += ptd_loss.detach()
++                            loss = ptd_loss * ptd_scale * self.config.opsd_coef
+                         else:
+                             # No valid samples for distillation → zero loss
+-                            loss = torch.tensor(0.0, device=log_probs.device, requires_grad=True)
+-                            append_to_dict(metrics, {"actor/opsd_kl": 0.0})
+-                            append_to_dict(metrics, {"actor/opsd_loss": 0.0})
+-
+-                        loss = loss * torch.sum(response_mask) * self.world_size / total_response_tokens
++                            loss = log_probs.sum() * 0.0
+                         loss.backward()
+ 
+                     else:
+@@ -752,16 +785,18 @@
+                         else:
+                             loss = pg_loss
+ 
++                        # PTD numerator has its own global denominator; never apply
++                        # the PG/reference all-response-token weight to it.
++                        ptd_contribution = log_probs.sum() * 0.0
+                         # PTD loss (for PTD-active samples)
+                         if ptd_active:
+                             ptd_loss = self._compute_ptd_loss(
+                                 model_inputs, model_inputs["ptd_mask"],
+                                 log_probs, student_topk, student_all_log_probs, response_mask,
++                                teacher_all_cpu=teacher_all_cpu,
+                             )
+-                            loss = loss + ptd_loss * self.config.ptd_coef
+-                            append_to_dict(metrics, {"actor/ptd_kl": ptd_loss.detach().item()})
+-                            append_to_dict(metrics, {"actor/ptd_loss": (ptd_loss * self.config.ptd_coef).detach().item()})
+-                            append_to_dict(metrics, {"actor/ptd_ratio": model_inputs["ptd_mask"].float().mean().item()})
++                            ptd_numerator += ptd_loss.detach()
++                            ptd_contribution = ptd_loss * ptd_scale * self.config.ptd_coef
+ 
+                             # Ori-entropy loss: -E[log π(a|s)] on PTD-active samples
+                             # ≈ H(π_actor) — encourages actor not to collapse toward teacher
+@@ -775,17 +810,32 @@
+                                 append_to_dict(metrics, {"actor/ori_entropy_loss_coef": self.config.ori_entropy_loss_coef})
+ 
+                         loss = loss * torch.sum(response_mask) * self.world_size / total_response_tokens
++                        loss = loss + ptd_contribution
+                         loss.backward()
+ 
+                         batch_metrics = {f"actor/{k}": v for k, v in pg_metrics.items()}
+                         batch_metrics["actor/pg_loss"] = pg_loss.detach().item()
+                         append_to_dict(metrics, batch_metrics)
+ 
++                if distillation_enabled:
++                    dist.all_reduce(ptd_numerator, op=dist.ReduceOp.SUM)
++                    global_ptd_loss = ptd_numerator / total_ptd_tokens.clamp_min(1)
++                    prefix = "opsd" if self.config.enable_opsd else "ptd"
++                    coef = self.config.opsd_coef if self.config.enable_opsd else self.config.ptd_coef
++                    append_to_dict(metrics, {
++                        f"actor/{prefix}_kl": global_ptd_loss.item(),
++                        f"actor/{prefix}_loss": (coef * global_ptd_loss).item(),
++                        f"actor/{prefix}_tokens": total_ptd_tokens.item(),
++                        f"actor/{prefix}_numerator": ptd_numerator.item(),
++                        f"actor/{prefix}_token_ratio": (total_ptd_tokens / total_response_tokens.clamp_min(1)).item(),
++                    })
+                 grad_norm = self._optimizer_step()
++                optimizer_updates += 1
+                 append_to_dict(metrics, {"actor/grad_norm": grad_norm.detach().item()})
+ 
+         # Free full-vocab teacher tensor after training is done
+         if hasattr(self, "_teacher_all_log_probs_cpu"):
+             del self._teacher_all_log_probs_cpu
+ 
++        append_to_dict(metrics, {"actor/optimizer_updates": optimizer_updates})
+         return metrics

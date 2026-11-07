@@ -1,0 +1,6 @@
+This repository contains a modified snapshot of XszNeverSleep/PTD-PO
+(commit 9953ea2b5c68aa6454b2fd693d5f5ff0fe34ed97), based on EasyR1/verl.
+Original copyright and Apache-2.0 license notices are retained.
+The reproduction modifications are documented in README.md, patch_notes.md,
+and patch.diff. No claim is made that the upstream paper used the audited
+public-code defects in its published experiments.

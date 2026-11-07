@@ -1,0 +1,58 @@
+{
+  "source": "https://arxiv.org/html/2606.07000v2#S2.T1",
+  "table": 1,
+  "backbone": "Qwen3-VL-4B-Thinking",
+  "metric": "avg@8, per-benchmark accuracy percent; macro average across nine benchmarks",
+  "benchmark_order": [
+    "PAPO_MMK12",
+    "hiyouga_geometry3k",
+    "AI4Math_MathVerse",
+    "AI4Math_MathVista",
+    "We_Math",
+    "MMMU_MMMU_Pro",
+    "BUAADreamer_clevr_count_70k",
+    "AI4Math_MathVerse_vision_dependent",
+    "lscpku_LogicVista"
+  ],
+  "rows": {
+    "SFT": [
+      59.59,
+      57.38,
+      70.85,
+      57.07,
+      71.24,
+      29.91,
+      72.38,
+      66.39,
+      46.5
+    ],
+    "GRPO": [
+      64.53,
+      62.62,
+      75.25,
+      68.38,
+      78.3,
+      40.19,
+      91.69,
+      73.03,
+      58.56
+    ],
+    "PTD-PO": [
+      73.84,
+      64.79,
+      80.45,
+      69.81,
+      81.67,
+      41.2,
+      92.88,
+      76.15,
+      60.32
+    ]
+  },
+  "overall_reported": {
+    "SFT": 59.03,
+    "GRPO": 68.06,
+    "PTD-PO": 71.23
+  },
+  "caution": "SFT row is an SFT-trained method, not the untouched initial backbone. Cross-model differences do not isolate PTD efficacy."
+}

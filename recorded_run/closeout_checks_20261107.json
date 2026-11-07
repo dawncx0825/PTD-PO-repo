@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checks": [
+    "original acceptance preserved PASS",
+    "198/594 actual training PASS",
+    "full checkpoint audit PASS",
+    "609 updated tensors including 259 vision; reload PASS",
+    "processor parity PASS",
+    "local initial/final score SHA256 PASS",
+    "closeout scripts compile PASS",
+    "raw initial/final full denominator/token/draw/hash audit PASS",
+    "evaluation dataset/generator/scorer locked hashes PASS",
+    "production/audit exact UID delete and GET 404; n0/n1 GET 404"
+  ],
+  "pending": null
+}

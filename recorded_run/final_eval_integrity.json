@@ -1,0 +1,36 @@
+{
+  "epoch": 1794017623.978443,
+  "labels": {
+    "initial": {
+      "questions": 11206,
+      "responses": 89648,
+      "empty": 0,
+      "finish_reasons": {
+        "stop": 35624,
+        "length": 54024
+      },
+      "length_fraction": 0.6026235945029449,
+      "max_tokens": 4096,
+      "scores_sha256": "cc66b99707a74ba3f3fc23e90b18a514756f9a042660e3307a66b61c4aafc6f2",
+      "prediction_manifest_sha256": "54b448cea0bebcbb0cb4d07d2ae13e97070f91b40d19225779bd76faa3cbd2a2",
+      "macro_avg": 41.567531134044174
+    },
+    "final": {
+      "questions": 11206,
+      "responses": 89648,
+      "empty": 0,
+      "finish_reasons": {
+        "stop": 50482,
+        "length": 39166
+      },
+      "length_fraction": 0.4368864893806889,
+      "max_tokens": 4096,
+      "scores_sha256": "c8014f0c6e1ff7ef46cd81b086c91fb7aa455248ab4b85bfe60e81c423646e70",
+      "prediction_manifest_sha256": "465a1691d85427601a8442181601cf0b7fdb0b5f184b4b2cba9abbbba07a7fc2",
+      "macro_avg": 54.997326036521294
+    }
+  },
+  "pipeline_lock_released": true,
+  "status": "PASS",
+  "delta_pp": 13.42979490247712
+}

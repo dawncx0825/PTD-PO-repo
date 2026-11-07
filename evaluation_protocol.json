@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "dataset_sha256": "6126127c43b4b050ac5881d7938f9e606365b555faf6dbccc0ec9ea587ab193a",
+  "questions": 11206,
+  "responses_per_question": 8,
+  "total_responses": 89648,
+  "benchmark_counts": {
+    "AI4Math_MathVerse": 2180,
+    "AI4Math_MathVerse_vision_dependent": 1308,
+    "AI4Math_MathVista": 1000,
+    "BUAADreamer_clevr_count_70k": 200,
+    "MMMU_MMMU_Pro": 1730,
+    "PAPO_MMK12": 2000,
+    "We_Math": 1740,
+    "hiyouga_geometry3k": 601,
+    "lscpku_LogicVista": 447
+  },
+  "images_verified": 11206,
+  "image_hash_mismatch": 0,
+  "sampling": {
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 50,
+    "min_p": 0.0,
+    "max_tokens": 4096,
+    "repetition_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "ignore_eos": false,
+    "skip_special_tokens": true,
+    "seed_per_question": "20261103 + global_index"
+  },
+  "score": "PAPO compute_accuracy_boxed_math, averaged across all eight independent responses; not pass@8 or voting",
+  "scorer_commit": "bee18f0800cfd324f7a342053beea5806c473b32",
+  "native_chat_template": true,
+  "thinking": true,
+  "input": "official raw user question and original image; gold only for scorer; no hint",
+  "image_processing": {
+    "extra_resize_before_processor": false,
+    "processor_min_pixels": 1024,
+    "processor_max_pixels": 589824
+  },
+  "generation_adaptation": "Native Qwen3-VL processor/template with batched n=8, rather than PAPO LLaMA-Factory wrapper with eight separate loops. Both checkpoints use the identical adapter. PAPO defaults top_k=50 and image pixel budgets preserved; original images are passed directly to the official processor per user preference.",
+  "source_hashes": {
+    "ops/eval_worker.py": "b2571431b917d7371d06d7378279a4eb7b95b7e6e04ea7c46cad770a2fda1378",
+    "ops/score_eval.py": "de4ba27fc97ac714b4350a881b0a5f0a206d9f3c56a31777b8d7500d4362a017",
+    "papo_eval/papo_eval/eval_utils.py": "090429912bf49a13055bb52f27857a3528f759f6c8319525fbb83600a4ae4adb",
+    "papo_eval/papo_eval/run_infer.py": "58f1b427c9f3d752cb6a98004ada103ea47c358c73eecffb06779f8460cd99a9",
+    "ops/run_eval.py": "e32423bff543883e6cdc0c95684c9a959ba463e138654b4384d5042ef394f3c0",
+    "ops/cluster_process.py": "bc0e772bafe289247c8e4d0c03a2f556d5f00c7119c06b1d3ee15ddb296d8e5f"
+  },
+  "execution": "Eight logical shards with per-question seeds. Ray schedules one H100 per shard on the allocated nodes. Shards may queue while the remaining GPUs are pending."
+}
