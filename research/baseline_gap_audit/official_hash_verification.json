@@ -1,0 +1,7 @@
+{
+  "checked_at": "2026-11-07T04:03:22.717768+00:00",
+  "actual_weight_hashes_match_official_hf": true,
+  "all_nine_parquet_hashes_match_official_hf": true,
+  "model_revision": "1de27d8c51f12e819435303b9e84c4e25ba8401e",
+  "dataset_revision": "6f55c6a9582bd307cfcafac0b0c668bad5341461"
+}

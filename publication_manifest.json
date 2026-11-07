@@ -8,7 +8,8 @@
     "Protocol hash gate includes eval driver and cluster helper",
     "README adds verified paper Table 1 PTD-PO versus paired local results and percentage-point differences",
     "Add paper Table 3 original-model baseline and keep Table 1/Table 3 PTD-PO results distinct",
-    "Document confirmed Thinking identity, matching paper 4096-token budget, and unresolved baseline evaluation discrepancies"
+    "Document confirmed Thinking identity, matching paper 4096-token budget, and unresolved baseline evaluation discrepancies",
+    "Add full original-model CPU audit, confirmed image preprocessing mismatch, bounded parser counterfactuals, and explicit pending GPU causal test; historical scores/protocol unchanged"
   ],
   "excluded": [
     "private account transport and cluster-resource orchestration",
@@ -20,7 +21,8 @@
     "All Python files parse successfully",
     "All shell scripts pass bash -n",
     "Embedded Python heredocs parse successfully",
-    "Four checkpoint log-merge tests passed"
+    "Four checkpoint log-merge tests passed",
+    "New CPU-audit scripts parse; aggregate counts and nine-task macro recomputed; public evidence excludes raw response examples and private infrastructure paths"
   ],
   "gpu_training_rerun_for_publication": false,
   "files": {
@@ -45,8 +47,8 @@
       "original_sha256": null
     },
     "README.md": {
-      "bytes": 18584,
-      "sha256": "86548e41222f351dcd83c34b44090a2684980beb1365638cc7d24282a94411af",
+      "bytes": 20301,
+      "sha256": "96edd4bbe58a9dc48263244147eba06a40d9ed3754d92ee9587b46d561161a27",
       "original_sha256": "0ef5a06e18bf24943e85372d46b480351e8ca736e5e12c988ae8d258109a97a8"
     },
     "UPSTREAM.md": {
@@ -1002,6 +1004,86 @@
     "research/paper_table3_4b_baseline.json": {
       "bytes": 1143,
       "sha256": "1bbaa87d49606b7055725e3569b5a8c74c6cf11aaca4319f257e9e316b3a2d35",
+      "original_sha256": null
+    },
+    "docs/baseline_gap_audit_20261107.md": {
+      "bytes": 11004,
+      "sha256": "15eac27f2176ae41fc1b6e9947d9c8cc3067fc03ddfbd5b7c3d849b05162e13b",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/actual_prompt_checks.json": {
+      "bytes": 2045,
+      "sha256": "32f33b8f324481743a7d23c996515092ed4c507f94e67fa37a1af32533f70de2",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/counterfactual_plan.json": {
+      "bytes": 1521,
+      "sha256": "ecbdaba15ec77d0f3ecc5a8018eb66c92805a8fcc8ce2c43e4fd443077c24719",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/dataset_checks.json": {
+      "bytes": 1948,
+      "sha256": "856e54ef05d21780832e29c284d6d301d9fd196eabeaef71a438a646b7f45f20",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/full_grid_checks.json": {
+      "bytes": 2448,
+      "sha256": "3b36d75e3efe4563f178d4555bef4a2e3df59c3d95d7f289021dd0caa70b9587",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/image_checks.json": {
+      "bytes": 23767,
+      "sha256": "9e362c015f436809effa0c86d95567017c3f0edda04caa4ba6da88dc2c155432",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/official_hash_verification.json": {
+      "bytes": 287,
+      "sha256": "bc4f549a443e2a2f1876a25b430f4b59bf261b80e1941848dea3e121257a8d33",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/response_forensics.json": {
+      "bytes": 8743,
+      "sha256": "8e00776a2dadddb5582350af17cbc6ea17324df7cf8601881216296de1d40ae3",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/template_checks.json": {
+      "bytes": 3309,
+      "sha256": "18ffc6e96695dfc99be514c25522cc18f1a0e4a03c015dcb6d3746465b6616a9",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/token_checks.json": {
+      "bytes": 1657,
+      "sha256": "2840653091a57dfd27d56a79e87fb239ffe457725d56f49b0c64ff94f8daa3d7",
+      "original_sha256": null
+    },
+    "research/baseline_gap_audit/weight_checks.json": {
+      "bytes": 468,
+      "sha256": "dc1b0b609e68d741215957b12140b1ce73ff4d3368ce187dfc432a9af697ef99",
+      "original_sha256": null
+    },
+    "ops/audit_baseline_gap_20261107.py": {
+      "bytes": 6555,
+      "sha256": "ac06e8961d6d3972668ba822c39ed6d2cc3bc738637a999777fc702005c37595",
+      "original_sha256": null
+    },
+    "ops/audit_baseline_grid_20261107.py": {
+      "bytes": 1691,
+      "sha256": "519d0e60996039fd8073eb2da6f2dd0e074c2e43b9ab7b744195318f6231785e",
+      "original_sha256": null
+    },
+    "ops/audit_baseline_images_20261107.py": {
+      "bytes": 2615,
+      "sha256": "1258bc55c9b8b9a8e23283f6e596e44c57f9bd6400d7439d404606f1374b28c7",
+      "original_sha256": null
+    },
+    "ops/audit_baseline_prompt_20261107.py": {
+      "bytes": 1399,
+      "sha256": "b0ecfa7cad80451f9915af10ea69adcb274f5b442fcbb01654f39e20f028dc5a",
+      "original_sha256": null
+    },
+    "ops/audit_baseline_tokens_20261107.py": {
+      "bytes": 2131,
+      "sha256": "a36c1c9babaf7d92ec72a6193e8fcbdf342a3323f13f6e4132be5a83976017f8",
       "original_sha256": null
     }
   }

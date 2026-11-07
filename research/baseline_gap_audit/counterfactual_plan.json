@@ -1,0 +1,47 @@
+{
+  "status": "PREPARED_NOT_RUN_NO_H100_QUOTA",
+  "question": "Effect of image preprocessing only on baseline accuracy and truncation",
+  "arms": {
+    "A": "raw RGB with processor size min1024 max589824",
+    "B": "PAPO external PIL resize and Qwen2VL protections, then model-default processor"
+  },
+  "unchanged": {
+    "model": "Qwen/Qwen3-VL-4B-Thinking",
+    "revision": "1de27d8c51f12e819435303b9e84c4e25ba8401e",
+    "template": "native Thinking",
+    "max_tokens": 4096,
+    "n": 8,
+    "temperature": 1,
+    "top_p": 1,
+    "top_k": 50,
+    "min_p": 0,
+    "repetition_penalty": 1,
+    "per_question_seed": "20261103+original_global_index",
+    "dtype": "bfloat16",
+    "TP": 1,
+    "vllm": "0.11.0",
+    "transformers": "4.57.6"
+  },
+  "pilot": {
+    "questions_per_benchmark": 64,
+    "total_questions": 576,
+    "draws_per_arm": 4608,
+    "selection_seed": 20261107,
+    "selection": "random.sample of each benchmark, preserve original global indices; both arms use identical saved manifest"
+  },
+  "required_reporting": [
+    "paired per-question accuracy delta",
+    "nine-task equal macro",
+    "question-level paired bootstrap interval",
+    "finish_reason length rate",
+    "no-complete-box rate",
+    "grid and token counts"
+  ],
+  "guardrails": [
+    "new isolated output labels for both arms",
+    "never overwrite historical baseline or final outputs",
+    "do not change template or token cap in image contrast",
+    "pilot not full benchmark estimate",
+    "do not preempt another experiment"
+  ]
+}

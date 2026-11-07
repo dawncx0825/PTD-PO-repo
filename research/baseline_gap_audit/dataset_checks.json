@@ -1,0 +1,55 @@
+{
+  "checks": {
+    "AI4Math_MathVerse": {
+      "rows": 2180,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "ec4139451936f1f78f413b94bc4dc8eb6cd064fb631a2836d36211a2668bd63f"
+    },
+    "AI4Math_MathVerse_vision_dependent": {
+      "rows": 1308,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "fa5d874373c0d66395a6edd0ec52a00a36277ac44b6683daf63cd8210ee681fe"
+    },
+    "AI4Math_MathVista": {
+      "rows": 1000,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "8c8a95ebcddf8d8ad881da06c059bd6bf31dd03f0cc5fa946d59472893d36a7d"
+    },
+    "BUAADreamer_clevr_count_70k": {
+      "rows": 200,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "e406f34e03e8e1e8f00ccc2ec0e65198f784fbea2c2833d2b418320d5d77d1e8"
+    },
+    "MMMU_MMMU_Pro": {
+      "rows": 1730,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "fe31e8811f369a90acf173b90cf2edfb9793d42f045e6581dfe1f93a69b57ccb"
+    },
+    "PAPO_MMK12": {
+      "rows": 2000,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "8b5bcb936ddc3ba5de5a9ee99084f2d4aa605034a85d3425d69af92aeb2b49db"
+    },
+    "We_Math": {
+      "rows": 1740,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "b67c9120463faa756d83119f562368753f6bc8853c11803b99775aa9490f8d01"
+    },
+    "hiyouga_geometry3k": {
+      "rows": 601,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "86332ed5950405b3822766ab6a47bda8b1277a4078407d947988803025049f03"
+    },
+    "lscpku_LogicVista": {
+      "rows": 447,
+      "exact_prompt_answer_id_image_match": true,
+      "parquet_sha256": "d155e20c557ea08953df53d08ead09e2f92217cfee7dedab11f1bd29ef5e5a1a"
+    }
+  },
+  "images": {
+    "total": 11206,
+    "over_max": 2727,
+    "under_min": 11
+  },
+  "dataset_sha256": "6126127c43b4b050ac5881d7938f9e606365b555faf6dbccc0ec9ea587ab193a"
+}

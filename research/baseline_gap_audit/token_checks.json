@@ -1,0 +1,71 @@
+{
+  "special_ids": {
+    "<think>": 151667,
+    "</think>": 151668,
+    "<|im_end|>": 151645,
+    "<|endoftext|>": 151643,
+    "<|im_start|>": 151644
+  },
+  "benchmarks": {
+    "AI4Math_MathVerse": {
+      "responses": 17440,
+      "</think>": 7970,
+      "<|im_end|>": 7071,
+      "final_only_score_delta": -334.0
+    },
+    "AI4Math_MathVerse_vision_dependent": {
+      "responses": 10464,
+      "</think>": 4540,
+      "<|im_end|>": 3958,
+      "final_only_score_delta": -207.0,
+      "<think>": 1
+    },
+    "AI4Math_MathVista": {
+      "responses": 8000,
+      "</think>": 5871,
+      "<|im_end|>": 5612,
+      "final_only_score_delta": -38.0,
+      "<think>": 9
+    },
+    "BUAADreamer_clevr_count_70k": {
+      "responses": 1600,
+      "</think>": 1595,
+      "<|im_end|>": 1593
+    },
+    "MMMU_MMMU_Pro": {
+      "responses": 13840,
+      "</think>": 6118,
+      "<|im_end|>": 5438,
+      "final_only_score_delta": -12.0
+    },
+    "PAPO_MMK12": {
+      "responses": 16000,
+      "</think>": 4671,
+      "final_only_score_delta": -104.0,
+      "<|im_end|>": 3963,
+      "ptd_cleanup_extraction_changed": 2,
+      "ptd_cleanup_score_delta": 0.0
+    },
+    "We_Math": {
+      "responses": 13920,
+      "</think>": 5569,
+      "<|im_end|>": 4926,
+      "final_only_score_delta": -179.0,
+      "<think>": 1
+    },
+    "hiyouga_geometry3k": {
+      "responses": 4808,
+      "</think>": 2225,
+      "<|im_end|>": 1959,
+      "final_only_score_delta": -95.0,
+      "<think>": 7
+    },
+    "lscpku_LogicVista": {
+      "responses": 3576,
+      "</think>": 1240,
+      "final_only_score_delta": -2.0,
+      "<|im_end|>": 1116,
+      "<think>": 2
+    }
+  }
+}

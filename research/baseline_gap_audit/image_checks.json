@@ -1,0 +1,1470 @@
+{
+  "processor_class": "Qwen2VLImageProcessorFast",
+  "model_default_size": {
+    "longest_edge": 16777216,
+    "shortest_edge": 65536
+  },
+  "counts": {
+    "AI4Math_MathVerse": {
+      "images": 2180,
+      "below_native_default_min65536": 827,
+      "above_our_max589824": 307,
+      "below_our_min1024": 0
+    },
+    "AI4Math_MathVerse_vision_dependent": {
+      "images": 1308,
+      "below_native_default_min65536": 375,
+      "above_our_max589824": 303,
+      "below_our_min1024": 0
+    },
+    "AI4Math_MathVista": {
+      "images": 1000,
+      "below_native_default_min65536": 232,
+      "above_our_max589824": 129,
+      "below_our_min1024": 0
+    },
+    "BUAADreamer_clevr_count_70k": {
+      "images": 200,
+      "below_native_default_min65536": 0,
+      "above_our_max589824": 0,
+      "below_our_min1024": 0
+    },
+    "MMMU_MMMU_Pro": {
+      "images": 1730,
+      "below_native_default_min65536": 0,
+      "above_our_max589824": 1587,
+      "below_our_min1024": 0
+    },
+    "PAPO_MMK12": {
+      "images": 2000,
+      "below_native_default_min65536": 1406,
+      "above_our_max589824": 180,
+      "below_our_min1024": 11
+    },
+    "We_Math": {
+      "images": 1740,
+      "below_native_default_min65536": 483,
+      "above_our_max589824": 181,
+      "below_our_min1024": 0
+    },
+    "hiyouga_geometry3k": {
+      "images": 601,
+      "below_native_default_min65536": 131,
+      "above_our_max589824": 0,
+      "below_our_min1024": 0
+    },
+    "lscpku_LogicVista": {
+      "images": 447,
+      "below_native_default_min65536": 9,
+      "above_our_max589824": 40,
+      "below_our_min1024": 0
+    }
+  },
+  "sample_checks": [
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "original_size": [
+        137,
+        93
+      ],
+      "legacy_intermediate_size": [
+        137,
+        93
+      ],
+      "our_grid": [
+        [
+          1,
+          6,
+          8
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "original_size": [
+        964,
+        688
+      ],
+      "legacy_intermediate_size": [
+        909,
+        648
+      ],
+      "our_grid": [
+        [
+          1,
+          40,
+          56
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          40,
+          56
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "original_size": [
+        108,
+        79
+      ],
+      "legacy_intermediate_size": [
+        108,
+        79
+      ],
+      "our_grid": [
+        [
+          1,
+          4,
+          6
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "original_size": [
+        156,
+        112
+      ],
+      "legacy_intermediate_size": [
+        156,
+        112
+      ],
+      "our_grid": [
+        [
+          1,
+          8,
+          10
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "original_size": [
+        94,
+        129
+      ],
+      "legacy_intermediate_size": [
+        94,
+        129
+      ],
+      "our_grid": [
+        [
+          1,
+          8,
+          6
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          20,
+          14
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "original_size": [
+        292,
+        265
+      ],
+      "legacy_intermediate_size": [
+        292,
+        265
+      ],
+      "our_grid": [
+        [
+          1,
+          16,
+          18
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          18
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "original_size": [
+        137,
+        93
+      ],
+      "legacy_intermediate_size": [
+        137,
+        93
+      ],
+      "our_grid": [
+        [
+          1,
+          6,
+          8
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "original_size": [
+        352,
+        227
+      ],
+      "legacy_intermediate_size": [
+        352,
+        227
+      ],
+      "our_grid": [
+        [
+          1,
+          14,
+          22
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          22
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "original_size": [
+        301,
+        231
+      ],
+      "legacy_intermediate_size": [
+        301,
+        231
+      ],
+      "our_grid": [
+        [
+          1,
+          14,
+          18
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "original_size": [
+        413,
+        227
+      ],
+      "legacy_intermediate_size": [
+        413,
+        227
+      ],
+      "our_grid": [
+        [
+          1,
+          14,
+          26
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          26
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "original_size": [
+        244,
+        234
+      ],
+      "legacy_intermediate_size": [
+        244,
+        234
+      ],
+      "our_grid": [
+        [
+          1,
+          14,
+          16
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          18
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "original_size": [
+        157,
+        104
+      ],
+      "legacy_intermediate_size": [
+        157,
+        104
+      ],
+      "our_grid": [
+        [
+          1,
+          6,
+          10
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "original_size": [
+        1514,
+        720
+      ],
+      "legacy_intermediate_size": [
+        1113,
+        529
+      ],
+      "our_grid": [
+        [
+          1,
+          32,
+          68
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          34,
+          70
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "original_size": [
+        322,
+        245
+      ],
+      "legacy_intermediate_size": [
+        322,
+        245
+      ],
+      "our_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "original_size": [
+        320,
+        240
+      ],
+      "legacy_intermediate_size": [
+        320,
+        240
+      ],
+      "our_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "original_size": [
+        552,
+        393
+      ],
+      "legacy_intermediate_size": [
+        552,
+        393
+      ],
+      "our_grid": [
+        [
+          1,
+          24,
+          34
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          24,
+          34
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "original_size": [
+        320,
+        240
+      ],
+      "legacy_intermediate_size": [
+        320,
+        240
+      ],
+      "our_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "original_size": [
+        640,
+        384
+      ],
+      "legacy_intermediate_size": [
+        640,
+        384
+      ],
+      "our_grid": [
+        [
+          1,
+          24,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          24,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "original_size": [
+        640,
+        480
+      ],
+      "legacy_intermediate_size": [
+        640,
+        480
+      ],
+      "our_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "original_size": [
+        640,
+        480
+      ],
+      "legacy_intermediate_size": [
+        640,
+        480
+      ],
+      "our_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "original_size": [
+        640,
+        480
+      ],
+      "legacy_intermediate_size": [
+        640,
+        480
+      ],
+      "our_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "original_size": [
+        640,
+        480
+      ],
+      "legacy_intermediate_size": [
+        640,
+        480
+      ],
+      "our_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "original_size": [
+        640,
+        480
+      ],
+      "legacy_intermediate_size": [
+        640,
+        480
+      ],
+      "our_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "original_size": [
+        640,
+        480
+      ],
+      "legacy_intermediate_size": [
+        640,
+        480
+      ],
+      "our_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "original_size": [
+        1014,
+        1182
+      ],
+      "legacy_intermediate_size": [
+        711,
+        829
+      ],
+      "our_grid": [
+        [
+          1,
+          50,
+          44
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          52,
+          44
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "original_size": [
+        1378,
+        980
+      ],
+      "legacy_intermediate_size": [
+        910,
+        647
+      ],
+      "our_grid": [
+        [
+          1,
+          40,
+          56
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          40,
+          56
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "original_size": [
+        1482,
+        1013
+      ],
+      "legacy_intermediate_size": [
+        928,
+        634
+      ],
+      "our_grid": [
+        [
+          1,
+          38,
+          58
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          40,
+          58
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "original_size": [
+        1119,
+        1055
+      ],
+      "legacy_intermediate_size": [
+        790,
+        745
+      ],
+      "our_grid": [
+        [
+          1,
+          46,
+          48
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          46,
+          50
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "original_size": [
+        938,
+        813
+      ],
+      "legacy_intermediate_size": [
+        824,
+        714
+      ],
+      "our_grid": [
+        [
+          1,
+          44,
+          50
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          44,
+          52
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "original_size": [
+        775,
+        441
+      ],
+      "legacy_intermediate_size": [
+        775,
+        441
+      ],
+      "our_grid": [
+        [
+          1,
+          28,
+          48
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          28,
+          48
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "original_size": [
+        190,
+        77
+      ],
+      "legacy_intermediate_size": [
+        190,
+        77
+      ],
+      "our_grid": [
+        [
+          1,
+          4,
+          12
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          12,
+          26
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "original_size": [
+        38,
+        19
+      ],
+      "legacy_intermediate_size": [
+        45,
+        28
+      ],
+      "our_grid": [
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          22
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "original_size": [
+        188,
+        145
+      ],
+      "legacy_intermediate_size": [
+        188,
+        145
+      ],
+      "our_grid": [
+        [
+          1,
+          10,
+          12
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "original_size": [
+        124,
+        44
+      ],
+      "legacy_intermediate_size": [
+        124,
+        44
+      ],
+      "our_grid": [
+        [
+          1,
+          2,
+          8
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          10,
+          28
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "original_size": [
+        108,
+        53
+      ],
+      "legacy_intermediate_size": [
+        108,
+        53
+      ],
+      "our_grid": [
+        [
+          1,
+          4,
+          6
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          12,
+          24
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "original_size": [
+        155,
+        90
+      ],
+      "legacy_intermediate_size": [
+        155,
+        90
+      ],
+      "our_grid": [
+        [
+          1,
+          6,
+          10
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          22
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "We_Math",
+      "original_size": [
+        255,
+        267
+      ],
+      "legacy_intermediate_size": [
+        255,
+        267
+      ],
+      "our_grid": [
+        [
+          1,
+          16,
+          16
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          16
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "We_Math",
+      "original_size": [
+        454,
+        213
+      ],
+      "legacy_intermediate_size": [
+        454,
+        213
+      ],
+      "our_grid": [
+        [
+          1,
+          14,
+          28
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          14,
+          28
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "We_Math",
+      "original_size": [
+        343,
+        276
+      ],
+      "legacy_intermediate_size": [
+        343,
+        276
+      ],
+      "our_grid": [
+        [
+          1,
+          18,
+          22
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          18,
+          22
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "We_Math",
+      "original_size": [
+        304,
+        151
+      ],
+      "legacy_intermediate_size": [
+        304,
+        151
+      ],
+      "our_grid": [
+        [
+          1,
+          10,
+          20
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          12,
+          24
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "We_Math",
+      "original_size": [
+        264,
+        208
+      ],
+      "legacy_intermediate_size": [
+        264,
+        208
+      ],
+      "our_grid": [
+        [
+          1,
+          12,
+          16
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "We_Math",
+      "original_size": [
+        670,
+        283
+      ],
+      "legacy_intermediate_size": [
+        670,
+        283
+      ],
+      "our_grid": [
+        [
+          1,
+          18,
+          42
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          18,
+          42
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "original_size": [
+        297,
+        265
+      ],
+      "legacy_intermediate_size": [
+        297,
+        265
+      ],
+      "our_grid": [
+        [
+          1,
+          16,
+          18
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          18
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "original_size": [
+        654,
+        577
+      ],
+      "legacy_intermediate_size": [
+        654,
+        577
+      ],
+      "our_grid": [
+        [
+          1,
+          36,
+          40
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          36,
+          40
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "original_size": [
+        531,
+        384
+      ],
+      "legacy_intermediate_size": [
+        531,
+        384
+      ],
+      "our_grid": [
+        [
+          1,
+          24,
+          34
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          24,
+          34
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "original_size": [
+        265,
+        208
+      ],
+      "legacy_intermediate_size": [
+        265,
+        208
+      ],
+      "our_grid": [
+        [
+          1,
+          12,
+          16
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          16,
+          20
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "original_size": [
+        523,
+        532
+      ],
+      "legacy_intermediate_size": [
+        523,
+        532
+      ],
+      "our_grid": [
+        [
+          1,
+          34,
+          32
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          34,
+          32
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "original_size": [
+        231,
+        380
+      ],
+      "legacy_intermediate_size": [
+        231,
+        380
+      ],
+      "our_grid": [
+        [
+          1,
+          24,
+          14
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          24,
+          14
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "original_size": [
+        890,
+        854
+      ],
+      "legacy_intermediate_size": [
+        784,
+        752
+      ],
+      "our_grid": [
+        [
+          1,
+          46,
+          48
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          48,
+          48
+        ]
+      ],
+      "pixels_identical": false
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "original_size": [
+        1135,
+        194
+      ],
+      "legacy_intermediate_size": [
+        1135,
+        194
+      ],
+      "our_grid": [
+        [
+          1,
+          12,
+          70
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          12,
+          70
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "original_size": [
+        957,
+        436
+      ],
+      "legacy_intermediate_size": [
+        957,
+        436
+      ],
+      "our_grid": [
+        [
+          1,
+          28,
+          60
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          28,
+          60
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "original_size": [
+        996,
+        441
+      ],
+      "legacy_intermediate_size": [
+        996,
+        441
+      ],
+      "our_grid": [
+        [
+          1,
+          28,
+          62
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          28,
+          62
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "original_size": [
+        767,
+        353
+      ],
+      "legacy_intermediate_size": [
+        767,
+        353
+      ],
+      "our_grid": [
+        [
+          1,
+          22,
+          48
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          22,
+          48
+        ]
+      ],
+      "pixels_identical": true
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "original_size": [
+        789,
+        536
+      ],
+      "legacy_intermediate_size": [
+        789,
+        536
+      ],
+      "our_grid": [
+        [
+          1,
+          34,
+          50
+        ]
+      ],
+      "public_papo_default_grid": [
+        [
+          1,
+          34,
+          50
+        ]
+      ],
+      "pixels_identical": true
+    }
+  ],
+  "note": "Comparison with public PAPO wrapper defaults, NOT confirmed author PTD evaluation command"
+}

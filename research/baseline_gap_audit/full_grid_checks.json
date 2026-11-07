@@ -1,0 +1,78 @@
+{
+  "benchmarks": {
+    "AI4Math_MathVerse": {
+      "images": 2180,
+      "grid_changed": 1084,
+      "fewer_visual_tokens_in_ours": 1084,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 424641,
+      "papo_default_visual_tokens_sum": 471760
+    },
+    "AI4Math_MathVerse_vision_dependent": {
+      "images": 1308,
+      "grid_changed": 628,
+      "fewer_visual_tokens_in_ours": 628,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 338623,
+      "papo_default_visual_tokens_sum": 361688
+    },
+    "AI4Math_MathVista": {
+      "images": 1000,
+      "grid_changed": 321,
+      "fewer_visual_tokens_in_ours": 321,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 216168,
+      "papo_default_visual_tokens_sum": 229808
+    },
+    "BUAADreamer_clevr_count_70k": {
+      "images": 200,
+      "grid_changed": 0,
+      "fewer_visual_tokens_in_ours": 0,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 60000,
+      "papo_default_visual_tokens_sum": 60000
+    },
+    "MMMU_MMMU_Pro": {
+      "images": 1730,
+      "grid_changed": 1244,
+      "fewer_visual_tokens_in_ours": 1244,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 940128,
+      "papo_default_visual_tokens_sum": 979493
+    },
+    "PAPO_MMK12": {
+      "images": 2000,
+      "grid_changed": 1548,
+      "fewer_visual_tokens_in_ours": 1548,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 216556,
+      "papo_default_visual_tokens_sum": 288729
+    },
+    "We_Math": {
+      "images": 1740,
+      "grid_changed": 621,
+      "fewer_visual_tokens_in_ours": 621,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 326042,
+      "papo_default_visual_tokens_sum": 347027
+    },
+    "hiyouga_geometry3k": {
+      "images": 601,
+      "grid_changed": 127,
+      "fewer_visual_tokens_in_ours": 127,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 81734,
+      "papo_default_visual_tokens_sum": 84597
+    },
+    "lscpku_LogicVista": {
+      "images": 447,
+      "grid_changed": 44,
+      "fewer_visual_tokens_in_ours": 44,
+      "more_visual_tokens_in_ours": 0,
+      "our_visual_tokens_sum": 141645,
+      "papo_default_visual_tokens_sum": 142942
+    }
+  },
+  "validated_against_actual_processor_samples": 54,
+  "note": "Grid shapes computed from installed processor smart_resize; full pixel tensor comparison only on 54 samples."
+}

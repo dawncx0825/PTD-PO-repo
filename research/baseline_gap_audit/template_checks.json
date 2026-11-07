@@ -1,0 +1,90 @@
+{
+  "samples": [
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "We_Math",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "native_suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n",
+      "legacy_suffix": "<|im_end|>\n<|im_start|>assistant\n",
+      "token_length_delta_native_minus_legacy": -9,
+      "native_system_present_in_prefix": false,
+      "legacy_system_present_in_prefix": true
+    }
+  ],
+  "generation_config": {
+    "bos_token_id": 151643,
+    "pad_token_id": 151643,
+    "do_sample": true,
+    "eos_token_id": [
+      151645,
+      151643
+    ],
+    "top_k": 20,
+    "top_p": 0.95,
+    "repetition_penalty": 1.0,
+    "temperature": 1.0,
+    "transformers_version": "4.56.0"
+  }
+}

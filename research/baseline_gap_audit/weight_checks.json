@@ -1,0 +1,16 @@
+{
+  "revision": "1de27d8c51f12e819435303b9e84c4e25ba8401e",
+  "actual_weight_hashes_match_record": true,
+  "files": [
+    {
+      "name": "model-00001-of-00002.safetensors",
+      "sha256": "02cab5e606c91e5ede7b1a70c49fa5abc58c77692362ee3be2e6656fd1327793",
+      "bytes": 4967229296
+    },
+    {
+      "name": "model-00002-of-00002.safetensors",
+      "sha256": "000ef17ec19fdd0531d825080c896c86025bc93036de1f34e3d133fa71c2cccf",
+      "bytes": 3908490048
+    }
+  ]
+}

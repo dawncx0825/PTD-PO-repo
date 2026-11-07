@@ -1,0 +1,122 @@
+{
+  "pass": true,
+  "samples": [
+    {
+      "benchmark": "AI4Math_MathVerse",
+      "index": 0,
+      "reconstructed_tokens": 141,
+      "recorded_tokens": 141,
+      "grid": [
+        [
+          1,
+          6,
+          8
+        ]
+      ]
+    },
+    {
+      "benchmark": "AI4Math_MathVerse_vision_dependent",
+      "index": 2180,
+      "reconstructed_tokens": 121,
+      "recorded_tokens": 121,
+      "grid": [
+        [
+          1,
+          6,
+          8
+        ]
+      ]
+    },
+    {
+      "benchmark": "AI4Math_MathVista",
+      "index": 3488,
+      "reconstructed_tokens": 779,
+      "recorded_tokens": 779,
+      "grid": [
+        [
+          1,
+          32,
+          68
+        ]
+      ]
+    },
+    {
+      "benchmark": "BUAADreamer_clevr_count_70k",
+      "index": 4488,
+      "reconstructed_tokens": 354,
+      "recorded_tokens": 354,
+      "grid": [
+        [
+          1,
+          30,
+          40
+        ]
+      ]
+    },
+    {
+      "benchmark": "MMMU_MMMU_Pro",
+      "index": 4688,
+      "reconstructed_tokens": 614,
+      "recorded_tokens": 614,
+      "grid": [
+        [
+          1,
+          50,
+          44
+        ]
+      ]
+    },
+    {
+      "benchmark": "PAPO_MMK12",
+      "index": 6418,
+      "reconstructed_tokens": 163,
+      "recorded_tokens": 163,
+      "grid": [
+        [
+          1,
+          4,
+          12
+        ]
+      ]
+    },
+    {
+      "benchmark": "We_Math",
+      "index": 8418,
+      "reconstructed_tokens": 181,
+      "recorded_tokens": 181,
+      "grid": [
+        [
+          1,
+          16,
+          16
+        ]
+      ]
+    },
+    {
+      "benchmark": "hiyouga_geometry3k",
+      "index": 10158,
+      "reconstructed_tokens": 159,
+      "recorded_tokens": 159,
+      "grid": [
+        [
+          1,
+          16,
+          18
+        ]
+      ]
+    },
+    {
+      "benchmark": "lscpku_LogicVista",
+      "index": 10759,
+      "reconstructed_tokens": 621,
+      "recorded_tokens": 621,
+      "grid": [
+        [
+          1,
+          46,
+          48
+        ]
+      ]
+    }
+  ]
+}
