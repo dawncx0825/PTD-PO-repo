@@ -1,0 +1,121 @@
+diff --git a/source/verl/trainer/config.py b/source/verl/trainer/config.py
+index e3e90dc..7d34881 100644
+--- a/source/verl/trainer/config.py
++++ b/source/verl/trainer/config.py
+@@ -101,6 +101,10 @@ class AlgorithmConfig:
+     """filter out high reward samples if online filtering"""
+     kl_direction: str = "reverse_kl"
+     """KL direction for standard ref KL: 'forward_kl', 'reverse_kl', 'jsd_kl'."""
++    kl_mask_mode: str = "ptd_group"
++    """Which trajectories keep the reference KL loss (KL ablation). 'ptd_group' (upstream): drop KL for every
++    trajectory in a PTD group; 'all': keep for all; 'none': drop for all; 'correct': keep only for
++    trajectories with accuracy == 1.0. Non-default modes require use_kl_loss=true."""
+     enable_ptd: bool = False
+     """Enable PTD mode: online policy distillation from hint-augmented teacher."""
+     ptd_threshold: float = 1.0
+@@ -196,6 +200,11 @@ class PPOConfig:
+         self.worker.actor.kl_penalty = self.algorithm.kl_penalty
+         self.worker.actor.kl_coef = self.algorithm.kl_coef
+         self.worker.actor.kl_direction = self.algorithm.kl_direction
++        self.worker.actor.kl_mask_mode = self.algorithm.kl_mask_mode
++        if self.algorithm.kl_mask_mode not in ("ptd_group", "all", "none", "correct"):
++            raise ValueError(f"unknown kl_mask_mode {self.algorithm.kl_mask_mode!r}")
++        if self.algorithm.kl_mask_mode != "ptd_group" and (self.algorithm.disable_kl or not self.algorithm.use_kl_loss):
++            raise ValueError("kl_mask_mode other than ptd_group requires use_kl_loss=true and disable_kl=false")
+         self.worker.actor.enable_ptd = self.algorithm.enable_ptd
+         self.worker.actor.ptd_coef = self.algorithm.ptd_coef
+         self.worker.actor.ptd_top_k = self.algorithm.ptd_top_k
+diff --git a/source/verl/trainer/core_algos.py b/source/verl/trainer/core_algos.py
+index c13a677..f0fa8bd 100644
+--- a/source/verl/trainer/core_algos.py
++++ b/source/verl/trainer/core_algos.py
+@@ -829,3 +829,18 @@ def compute_ptd_mask(
+                     ptd_mask[idx] = True
+ 
+     return ptd_mask, ptd_group_mask
++
++
++def compute_kl_keep_mask(accuracy_scores: torch.Tensor, kl_mask_mode: str) -> torch.Tensor:
++    """KL ablation: [B] bool, True = trajectory keeps the reference KL loss.
++
++    'all' keeps every trajectory, 'none' drops every trajectory, 'correct' keeps only
++    trajectories with accuracy == 1.0 (the same correctness rule as compute_ptd_mask).
++    """
++    if kl_mask_mode == "all":
++        return torch.ones(accuracy_scores.shape[0], dtype=torch.bool)
++    if kl_mask_mode == "none":
++        return torch.zeros(accuracy_scores.shape[0], dtype=torch.bool)
++    if kl_mask_mode == "correct":
++        return accuracy_scores == 1.0
++    raise ValueError(f"compute_kl_keep_mask does not handle kl_mask_mode={kl_mask_mode!r}")
+diff --git a/source/verl/trainer/ray_trainer.py b/source/verl/trainer/ray_trainer.py
+index 7e604cc..c68f344 100644
+--- a/source/verl/trainer/ray_trainer.py
++++ b/source/verl/trainer/ray_trainer.py
+@@ -50,6 +50,7 @@ from .core_algos import (
+     KLController,
+     compute_advantage_return,
+     compute_kl,
++    compute_kl_keep_mask,
+     compute_ptd_mask,
+     get_kl_controller,
+ )
+@@ -656,6 +657,16 @@ class RayPPOTrainer:
+                     else:
+                         accuracy_list = None
+ 
++                    # KL ablation: per-trajectory reference-KL mask, replaces the PTD-group KL drop
++                    if self.config.algorithm.kl_mask_mode != "ptd_group":
++                        if accuracy_list is None or len(accuracy_list) != len(batch):
++                            raise RuntimeError("kl_mask_mode needs per-trajectory accuracy from the reward function")
++                        kl_keep_mask = compute_kl_keep_mask(
++                            torch.tensor(accuracy_list, dtype=torch.float32), self.config.algorithm.kl_mask_mode
++                        )
++                        batch.batch["kl_keep_mask"] = kl_keep_mask
++                        metrics["kl_ablation/keep_ratio"] = kl_keep_mask.float().mean().item()
++
+                     # Compute PTD mask if PTD is enabled and hint data is available
+                     if self.config.algorithm.enable_ptd and "hint_input_ids" in batch.batch:
+                         if accuracy_list is None:
+diff --git a/source/verl/workers/actor/config.py b/source/verl/workers/actor/config.py
+index 6a64bfa..1ceb91b 100644
+--- a/source/verl/workers/actor/config.py
++++ b/source/verl/workers/actor/config.py
+@@ -139,6 +139,7 @@ class ActorConfig:
+     kl_penalty: str = field(default="kl", init=False)
+     kl_coef: float = field(default=0.0, init=False)
+     kl_direction: str = field(default="reverse_kl", init=False)
++    kl_mask_mode: str = field(default="ptd_group", init=False)
+     enable_ptd: bool = field(default=False, init=False)
+     ptd_coef: float = field(default=1.0, init=False)
+     ptd_top_k: int = field(default=64, init=False)
+diff --git a/source/verl/workers/actor/dp_actor.py b/source/verl/workers/actor/dp_actor.py
+index 514c5ad..3ab2c2c 100644
+--- a/source/verl/workers/actor/dp_actor.py
++++ b/source/verl/workers/actor/dp_actor.py
+@@ -646,6 +646,10 @@ class DataParallelPPOActor(BasePPOActor):
+                     select_keys.extend(["teacher_log_probs"])
+         if "hint_valid" in data.batch:
+             select_keys.append("hint_valid")
++        if self.config.kl_mask_mode != "ptd_group":
++            if "kl_keep_mask" not in data.batch.keys():
++                raise RuntimeError("kl_mask_mode is set but the batch carries no kl_keep_mask")
++            select_keys.append("kl_keep_mask")
+         non_tensor_select_keys = ["multi_modal_inputs"]
+ 
+         # Split to make minibatch iterator for updating the actor
+@@ -774,8 +778,13 @@ class DataParallelPPOActor(BasePPOActor):
+                                 kl_direction=self.config.kl_direction,
+                             )
+ 
++                            # KL ablation: log the unmasked KL so drift is visible in every arm
++                            append_to_dict(metrics, {"actor/kl_unmasked": average_loss(
++                                kld.detach(), response_mask, mode=self.config.loss_avg_mode).item()})
++                            if self.config.kl_mask_mode != "ptd_group":
++                                kld = kld * model_inputs["kl_keep_mask"].unsqueeze(-1).float()
+                             # Zero KL for PTD groups (PTD replaces ref KL entirely)
+-                            if self.config.enable_ptd and "ptd_group_mask" in model_inputs:
++                            elif self.config.enable_ptd and "ptd_group_mask" in model_inputs:
+                                 kld = kld * (~model_inputs["ptd_group_mask"]).unsqueeze(-1).float()
+ 
+                             kl_loss = average_loss(kld, response_mask, mode=self.config.loss_avg_mode)

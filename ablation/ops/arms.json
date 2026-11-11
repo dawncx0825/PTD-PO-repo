@@ -1,0 +1,13 @@
+{
+ "order": ["A1_grpo_kl", "A4_ptd_klcorrect", "A2_grpo_nokl", "A3_grpo_klcorrect"],
+ "arms": {
+  "A1_grpo_kl":        {"enable_ptd": false, "kl_mask_mode": "all",     "desc": "GRPO, ref KL on every trajectory"},
+  "A2_grpo_nokl":      {"enable_ptd": false, "kl_mask_mode": "none",    "desc": "GRPO, no ref KL"},
+  "A3_grpo_klcorrect": {"enable_ptd": false, "kl_mask_mode": "correct", "desc": "GRPO, ref KL only on correct trajectories"},
+  "A4_ptd_klcorrect":  {"enable_ptd": true,  "kl_mask_mode": "correct", "desc": "PTD-PO, ref KL only on correct trajectories (wrong ones get PTD, no KL)"}
+ },
+ "existing": {
+  "A5_ptd_groupnokl":  {"enable_ptd": true,  "kl_mask_mode": "ptd_group", "desc": "PTD-PO as fixed and run on 8xH100 2026-11-07: no KL for any trajectory in a group with acc<1; KL only for all-correct groups", "overall_macro_avg": 54.997326},
+  "base":              {"desc": "Qwen3-VL-4B-Thinking original weights, same eval (8xH100)", "overall_macro_avg": 41.567531}
+ }
+}

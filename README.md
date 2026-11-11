@@ -4,6 +4,12 @@
 
 基于 [XszNeverSleep/PTD-PO](https://github.com/XszNeverSleep/PTD-PO) 的固定提交 [`9953ea2`](https://github.com/XszNeverSleep/PTD-PO/commit/9953ea2b5c68aa6454b2fd693d5f5ff0fe34ed97)，保留 Apache-2.0 许可。`source/` 下的训练 Python 源码与本次已完成实验的验收哈希一致；发布时只对外围脚本的机器路径做参数化。代码审查指出的是该公开提交的问题，不能据此断言论文报告使用了相同的执行路径。
 
+## 新增：数据、hint 与 KL 消融
+
+- [`data/`](data/README.md)：训练（38,156 条，含自生成 hint 及其来源模型）、验证、九任务评测数据，hint 生成与质检提示词；图像在 Release `data-v1` 中。
+- [`ablation/`](ablation/README.md)：五个设置的 KL 消融（GRPO 有/无 KL、只对答对轨迹加 KL，以及 PTD-PO 下两种 KL 掩码），两台 8×A100 运行中，结果完成后更新。
+- `recorded_run/` 新增修复版训练日志、原模型和最终模型的逐题评分；89,648×2 条逐条回答文本在 Release `data-v1`。
+
 ## 我们修了什么
 
 | 修复 | 原问题 | 本仓库的改动 | 验证方式 |
@@ -138,12 +144,14 @@ tests/             数值、图像、分组/分布式梯度、checkpoint 恢复�
 launch.sh           本次最终训练配置（机器路径参数化）
 resolved_config.yaml  历史实际展开配置（路径以占位符展示）
 requirements-repro.txt  关键环境版本；environment.txt 为历史完整环境快照
-recorded_run/       历史验收、步数、权重变化、processor 一致性、分母与结果摘要
+recorded_run/       历史验收、步数、权重变化、processor 一致性、分母与结果摘要、训练日志、逐题评分
+data/               训练/验证/评测数据与 hint（图像在 Release）
+ablation/           KL 消融补丁、启动与评测脚本、结果
 patch.diff          相对固定上游提交的训练修复差异
 research/           论文参考表
 ```
 
-`recorded_run/` 是已完成实验的**历史证据**，不能复制到新运行根目录作为验收通过凭据。未上传模型权重、数据/hint、原图、逐题回答、运行缓存、私有集群账号与调度脚本；这些不是训练方法代码。上游插图通过原仓库引用。检查点切换监督器和自动删除资源的脚本也不属于公开运行入口。
+`recorded_run/` 是已完成实验的**历史证据**，不能复制到新运行根目录作为验收通过凭据。数据、hint、图像和逐题回答已经公开（见 `data/` 和 Release `data-v1`）。未上传模型权重、运行缓存、私有集群账号与调度脚本。上游插图通过原仓库引用。检查点切换监督器和自动删除资源的脚本也不属于公开运行入口。
 
 ## 在自己的环境运行
 
